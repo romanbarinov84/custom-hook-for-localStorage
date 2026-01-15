@@ -1,8 +1,26 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 const NameInput = () => {
-  const [name, setName] = useState("");
+
+   const initialValue = "";
+   const key = name;
+
+   const getStoredValue = () => {
+    try {
+      const item = localStorage.getItem(key);
+      return item ? JSON.parse(item) : initialValue
+    } catch (error) {
+      console.log("Ошибка  получения данних из localStorage",error);
+      return initialValue;
+    }
+   }
+
+  const [name, setName] = useState(getStoredValue);
+
+  useEffect(() => {
+    localStorage.setItem("name" , name);
+  },[name])
 
   return (
     <div className="name-container">
